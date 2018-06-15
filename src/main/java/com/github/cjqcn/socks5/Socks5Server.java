@@ -1,11 +1,14 @@
 package com.github.cjqcn.socks5;
 
+import com.github.cjqcn.socks5.handler.AuditHandler;
+import com.github.cjqcn.socks5.handler.Socks5InitialRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.socksx.v5.Socks5InitialRequestDecoder;
 import io.netty.util.concurrent.ImmediateEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,11 +52,13 @@ public class Socks5Server {
 							protected void initChannel(SocketChannel ch) throws Exception {
 								channelGroup.add(ch);
 								ChannelPipeline channelPipeline = ch.pipeline();
-								channelPipeline.addLast();
+								channelPipeline.addLast("AuditHandler", new AuditHandler());
+								channelPipeline.addLast("Socks5InitialRequestDecoder",
+										new Socks5InitialRequestDecoder());
+								channelPipeline.addLast("Socks5InitialRequestHandler",
+										new Socks5InitialRequestHandler());
 							}
 						});
-
-
 				ChannelFuture future = bootstrap.bind(port).sync();
 
 				channelGroup.add(future.channel());
