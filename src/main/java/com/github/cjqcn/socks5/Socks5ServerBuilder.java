@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadFactory;
  */
 public class Socks5ServerBuilder {
 
-	public static final int DEFUALT_PORT = 11080;
+	public static final int DEFUALT_PORT = 8641;
 	public static final boolean DEFAULT_SHOULD_AUTH = false;
 
 	public static Socks5Server create(int port, boolean shoudAuth) {

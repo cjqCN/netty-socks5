@@ -12,7 +12,7 @@ public class AuditHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		//LOG.debug(String.valueOf(msg));
+        LOG.debug(String.valueOf(msg));
 		ctx.fireChannelRead(msg);
 	}
 
