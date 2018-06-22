@@ -1,10 +1,8 @@
-package com.github.cjqcn.socks5;
+package com.github.cjqcn.socks5.server;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.util.concurrent.DefaultThreadFactory;
-
-import java.util.concurrent.ThreadFactory;
 
 /**
  * @author jqChan
@@ -28,5 +26,8 @@ public class Socks5ServerBuilder {
 		return create(DEFUALT_PORT, DEFAULT_SHOULD_AUTH);
 	}
 
+	public static void main(String[] args) throws InterruptedException {
+		Socks5ServerBuilder.create().start();
+	}
 
 }

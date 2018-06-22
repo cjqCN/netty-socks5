@@ -1,9 +1,10 @@
-package com.github.cjqcn.socks5;
+package com.github.cjqcn.socks5.server;
 
-import com.github.cjqcn.socks5.handler.AuditHandler;
-import com.github.cjqcn.socks5.handler.ProxyIdleHandler;
-import com.github.cjqcn.socks5.handler.Socks5CommandRequestHandler;
-import com.github.cjqcn.socks5.handler.Socks5InitialRequestHandler;
+
+import com.github.cjqcn.socks5.server.handler.AuditHandler;
+import com.github.cjqcn.socks5.server.handler.ProxyIdleHandler;
+import com.github.cjqcn.socks5.server.handler.Socks5CommandRequestHandler;
+import com.github.cjqcn.socks5.server.handler.Socks5InitialRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.group.ChannelGroup;
