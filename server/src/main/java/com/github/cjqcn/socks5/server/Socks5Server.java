@@ -1,19 +1,15 @@
 package com.github.cjqcn.socks5.server;
 
 
+import com.github.cjqcn.socks5.common.Server;
 import com.github.cjqcn.socks5.server.handler.AuditHandler;
 import com.github.cjqcn.socks5.server.handler.ProxyIdleHandler;
-import com.github.cjqcn.socks5.server.handler.Socks5CommandRequestHandler;
-import com.github.cjqcn.socks5.server.handler.Socks5InitialRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.socksx.v5.Socks5CommandRequestDecoder;
-import io.netty.handler.codec.socksx.v5.Socks5InitialRequestDecoder;
-import io.netty.handler.codec.socksx.v5.Socks5ServerEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.ImmediateEventExecutor;
 import org.slf4j.Logger;
@@ -24,7 +20,7 @@ import org.slf4j.LoggerFactory;
  * @author jqChan
  * @date 2018/6/13
  */
-public class Socks5Server {
+public class Socks5Server implements Server {
 
     private static final Logger LOG = LoggerFactory.getLogger(Socks5Server.class);
     private Integer port;
@@ -64,24 +60,6 @@ public class Socks5Server {
 
                                 //审计日志
                                 channelPipeline.addLast("AuditHandler", new AuditHandler());
-
-                                //Socks5ServerEncoder
-                                ch.pipeline().addLast("Socks5ServerEncoder",
-                                        Socks5ServerEncoder.DEFAULT);
-
-                                //初始化解码器
-                                channelPipeline.addLast("Socks5InitialRequestDecoder",
-                                        new Socks5InitialRequestDecoder());
-                                //初始化处理器
-                                channelPipeline.addLast("Socks5InitialRequestHandler",
-                                        new Socks5InitialRequestHandler());
-
-                                //socks请求解码器
-                                channelPipeline.addLast("Socks5CommandRequestDecoder",
-                                        new Socks5CommandRequestDecoder());
-                                //socks处理器
-                                channelPipeline.addLast("Socks5CommandRequestHandler",
-                                        new Socks5CommandRequestHandler());
                             }
                         });
                 ChannelFuture future = bootstrap.bind("0.0.0.0", port).sync();

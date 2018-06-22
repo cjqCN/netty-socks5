@@ -1,4 +1,4 @@
-package com.github.cjqcn.socks5.server.handler;
+package com.github.cjqcn.socks5.client.handler;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -19,7 +19,6 @@ public class Socks5CommandRequestHandler extends SimpleChannelInboundHandler<Def
 
     @Override
     protected void channelRead0(final ChannelHandlerContext clientChannelContext, DefaultSocks5CommandRequest msg) throws Exception {
-        LOG.debug("请求类型：{}，目标服务器：{}:{}", msg.type(), msg.dstAddr(), msg.dstPort());
 
         if (msg.type().equals(Socks5CommandType.CONNECT)) {
             LOG.trace("准备连接目标服务器");

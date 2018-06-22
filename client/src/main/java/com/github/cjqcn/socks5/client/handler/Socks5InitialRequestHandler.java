@@ -1,4 +1,4 @@
-package com.github.cjqcn.socks5.server.handler;
+package com.github.cjqcn.socks5.client.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
