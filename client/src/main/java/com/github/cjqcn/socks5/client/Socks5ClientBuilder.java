@@ -10,24 +10,24 @@ import io.netty.util.concurrent.DefaultThreadFactory;
  */
 public class Socks5ClientBuilder {
 
-	public static final int DEFUALT_PORT = 11081;
-	public static final boolean DEFAULT_SHOULD_AUTH = false;
+    public static final int DEFUALT_PORT = 11081;
+    public static final boolean DEFAULT_SHOULD_AUTH = false;
 
-	public static Socks5Client create(int port, boolean shoudAuth) {
+    public static Socks5Client create(int port, boolean shoudAuth) {
 
-		EventLoopGroup bossGroup = new NioEventLoopGroup(1, new DefaultThreadFactory("boss-thread"));
-		EventLoopGroup workGroup = new NioEventLoopGroup(10, new DefaultThreadFactory("worker-thread"));
-		return new Socks5Client().setPort(port).setBossGroup(bossGroup).setWorkGroup(workGroup).setShouldAuth
-				(shoudAuth);
-	}
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1, new DefaultThreadFactory("boss-thread"));
+        EventLoopGroup workGroup = new NioEventLoopGroup(10, new DefaultThreadFactory("worker-thread"));
+        return new Socks5Client().setPort(port).setBossGroup(bossGroup).setWorkGroup(workGroup).setShouldAuth
+                (shoudAuth);
+    }
 
 
-	public static Socks5Client create() {
-		return create(DEFUALT_PORT, DEFAULT_SHOULD_AUTH);
-	}
+    public static Socks5Client create() {
+        return create(DEFUALT_PORT, DEFAULT_SHOULD_AUTH);
+    }
 
-	public static void main(String[] args) throws InterruptedException {
-		Socks5ClientBuilder.create().start();
-	}
+    public static void main(String[] args) throws InterruptedException {
+        Socks5ClientBuilder.create().start();
+    }
 
 }
