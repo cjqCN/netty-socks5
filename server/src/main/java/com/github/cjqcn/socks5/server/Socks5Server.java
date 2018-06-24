@@ -3,14 +3,13 @@ package com.github.cjqcn.socks5.server;
 
 import com.github.cjqcn.socks5.common.Server;
 import com.github.cjqcn.socks5.server.handler.AuditHandler;
-import com.github.cjqcn.socks5.server.handler.ProxyIdleHandler;
+import com.github.cjqcn.socks5.server.handler.RequestInitHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.ImmediateEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,12 +53,10 @@ public class Socks5Server implements Server {
                             protected void initChannel(SocketChannel ch) throws Exception {
                                 channelGroup.add(ch);
                                 ChannelPipeline channelPipeline = ch.pipeline();
-                                //channel超时处理
-                                ch.pipeline().addLast(new IdleStateHandler(3, 30, 0));
-                                ch.pipeline().addLast(new ProxyIdleHandler());
-
                                 //审计日志
                                 channelPipeline.addLast("AuditHandler", new AuditHandler());
+
+                                channelPipeline.addLast("RequestInitHandler", new RequestInitHandler());
                             }
                         });
                 ChannelFuture future = bootstrap.bind("0.0.0.0", port).sync();

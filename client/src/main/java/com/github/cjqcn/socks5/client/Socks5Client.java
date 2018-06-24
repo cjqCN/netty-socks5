@@ -75,8 +75,6 @@ public class Socks5Client implements Server {
 								channelPipeline.addLast("Socks5CommandRequestHandler",
 										new Socks5CommandRequestHandler());
 
-								channelPipeline.addLast("ConnectServerHandler",
-										new ConnectServerHandler());
 							}
 						});
 				ChannelFuture future = bootstrap.bind("0.0.0.0", port).sync();
