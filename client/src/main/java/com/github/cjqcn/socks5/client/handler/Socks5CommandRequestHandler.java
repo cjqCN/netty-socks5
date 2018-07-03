@@ -10,17 +10,14 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.socksx.v5.*;
-import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.TimeUnit;
-
 public class Socks5CommandRequestHandler extends SimpleChannelInboundHandler<DefaultSocks5CommandRequest> {
 
-	private final static EventLoopGroup proxyGroup = new NioEventLoopGroup(2, new DefaultThreadFactory
+	private final static EventLoopGroup proxyGroup = new NioEventLoopGroup(20, new DefaultThreadFactory
 			("proxy-thread"));
 
 	private static final Logger LOG = LoggerFactory.getLogger(Socks5CommandRequestHandler.class);

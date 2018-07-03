@@ -28,7 +28,7 @@ public class Client2DestHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        LOG.trace("客户端断开连接");
+        LOG.debug("客户端断开连接");
         super.channelInactive(ctx);
         destChannelFuture.channel().close();
     }

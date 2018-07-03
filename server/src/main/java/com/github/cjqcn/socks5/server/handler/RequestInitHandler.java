@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  */
 public class RequestInitHandler extends ChannelInboundHandlerAdapter {
 
-	private final static EventLoopGroup proxyGroup = new NioEventLoopGroup(200, new DefaultThreadFactory
+	private final static EventLoopGroup proxyGroup = new NioEventLoopGroup(20, new DefaultThreadFactory
 			("proxy-thread"));
 
 	private static final Logger LOG = LoggerFactory.getLogger(RequestInitHandler.class);

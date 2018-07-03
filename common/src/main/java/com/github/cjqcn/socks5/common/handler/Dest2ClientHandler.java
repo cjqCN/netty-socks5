@@ -32,7 +32,7 @@ public class Dest2ClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        LOG.trace("目标服务器断开连接");
+        LOG.debug("目标服务器断开连接");
         super.channelInactive(ctx);
         clientChannelContext.channel().close();
     }
