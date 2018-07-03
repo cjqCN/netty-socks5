@@ -20,54 +20,55 @@ import org.slf4j.LoggerFactory;
  */
 public class RequestInitHandler extends ChannelInboundHandlerAdapter {
 
-	private final static EventLoopGroup proxyGroup = new NioEventLoopGroup(20, new DefaultThreadFactory
-			("proxy-thread"));
+    private final static EventLoopGroup proxyGroup = new NioEventLoopGroup(20, new DefaultThreadFactory
+            ("proxy-thread"));
 
-	private static final Logger LOG = LoggerFactory.getLogger(RequestInitHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RequestInitHandler.class);
 
 
-	private boolean inited = false;
+    private boolean inited = false;
 
-	@Override
-	public void channelRead(final ChannelHandlerContext clientChannelContext, final Object msg) throws Exception {
-		if (!inited) {
-			inited = true;
-			ByteBuf buf = (ByteBuf) msg;
-			String rawConnectMsg = buf.toString(CharsetUtil.UTF_8);
-			String connectMsg = rawConnectMsg.substring(0, rawConnectMsg.indexOf("zjp"));
-			final String addr = connectMsg.substring(0, connectMsg.indexOf(":"));
-			final int port = Integer.valueOf(connectMsg.substring(connectMsg.indexOf(":") + 1, connectMsg.length()));
-			LOG.debug("Server received:{}:{}", addr, port);
-			Bootstrap bootstrap = new Bootstrap();
-			bootstrap.group(proxyGroup)
-					.channel(NioSocketChannel.class)
-					.option(ChannelOption.TCP_NODELAY, true)
-					.option(ChannelOption.SO_KEEPALIVE, true)
-					.handler(new ChannelInitializer<SocketChannel>() {
-						@Override
-						protected void initChannel(SocketChannel ch) throws Exception {
-							ch.pipeline().addLast(new Dest2ClientHandler(clientChannelContext));
-						}
-					});
-			ChannelFuture future = bootstrap.connect(addr, port);
-			future.addListener(new ChannelFutureListener() {
-				@Override
-				public void operationComplete(final ChannelFuture future) throws Exception {
-					if (future.isSuccess()) {
-						LOG.debug("成功连接目标服务器:{}:{}", addr, port);
-						clientChannelContext.pipeline().addLast(new Client2DestHandler(future));
-						final ByteBuf buf = Unpooled.copiedBuffer("0000",
-								CharsetUtil.UTF_8);
-						clientChannelContext.writeAndFlush(buf);
-					} else {
-						final ByteBuf buf = Unpooled.copiedBuffer("1111",
-								CharsetUtil.UTF_8);
-						clientChannelContext.writeAndFlush(buf);
-					}
-				}
-			});
-		} else {
-			clientChannelContext.fireChannelRead(msg);
-		}
-	}
+    @Override
+    public void channelRead(final ChannelHandlerContext clientChannelContext, final Object msg) throws Exception {
+        if (!inited) {
+            inited = true;
+            ByteBuf buf = (ByteBuf) msg;
+            String rawConnectMsg = buf.toString(CharsetUtil.UTF_8);
+            buf.release();
+            String connectMsg = rawConnectMsg.substring(0, rawConnectMsg.indexOf("zjp"));
+            final String addr = connectMsg.substring(0, connectMsg.indexOf(":"));
+            final int port = Integer.valueOf(connectMsg.substring(connectMsg.indexOf(":") + 1, connectMsg.length()));
+            LOG.debug("Server received:{}:{}", addr, port);
+            Bootstrap bootstrap = new Bootstrap();
+            bootstrap.group(proxyGroup)
+                    .channel(NioSocketChannel.class)
+                    .option(ChannelOption.TCP_NODELAY, true)
+                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    .handler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(new Dest2ClientHandler(clientChannelContext));
+                        }
+                    });
+            ChannelFuture future = bootstrap.connect(addr, port);
+            future.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(final ChannelFuture future) throws Exception {
+                    if (future.isSuccess()) {
+                        LOG.debug("成功连接目标服务器:{}:{}", addr, port);
+                        clientChannelContext.pipeline().addLast(new Client2DestHandler(future));
+                        final ByteBuf buf = Unpooled.copiedBuffer("0000",
+                                CharsetUtil.UTF_8);
+                        clientChannelContext.writeAndFlush(buf);
+                    } else {
+                        final ByteBuf buf = Unpooled.copiedBuffer("1111",
+                                CharsetUtil.UTF_8);
+                        clientChannelContext.writeAndFlush(buf);
+                    }
+                }
+            });
+        } else {
+            clientChannelContext.fireChannelRead(msg);
+        }
+    }
 }
