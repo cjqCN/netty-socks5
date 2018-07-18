@@ -1,5 +1,6 @@
 package com.github.cjqcn.socks5.direct.server.handler;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.socksx.SocksVersion;
@@ -10,6 +11,7 @@ import io.netty.handler.codec.socksx.v5.Socks5InitialResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@ChannelHandler.Sharable
 public class Socks5InitialRequestHandler extends SimpleChannelInboundHandler<DefaultSocks5InitialRequest> {
 
     private static final Logger LOG = LoggerFactory.getLogger(Socks5InitialRequestHandler.class);
