@@ -7,8 +7,6 @@
     <artifactId>netty-socks5</artifactId>
     <version>1.0.0</version>
     <modules>
-        <module>server</module>
-        <module>client</module>
         <module>common</module>
         <module>direct-server</module>
         <module>server-client</module>
