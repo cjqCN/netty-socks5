@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.cjqcn.socks5.direct.server.socksproxy;
+package com.github.cjqcn.socks5.direct.server;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
